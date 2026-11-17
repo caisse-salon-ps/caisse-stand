@@ -2,7 +2,7 @@
    Stratégie « stale-while-revalidate » : on sert tout de suite la copie en cache,
    puis on la met à jour en arrière-plan. Les appels à Supabase (autre domaine) ne
    passent jamais par ici. Changez VERSION pour forcer un nettoyage des anciens caches. */
-var VERSION = 'caisse-1.0.0';
+var VERSION = 'caisse-1.2.0';
 var SHELL = ['./', 'index.html', 'config.js', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', function(e){
@@ -21,8 +21,10 @@ self.addEventListener('activate', function(e){
   );
 });
 
+/* Prévient les pages ouvertes. Deux envois : le premier peut partir avant que la page qui vient de se charger existe encore ; le second la rattrape. */
 function notify(){
-  return self.clients.matchAll({type:'window', includeUncontrolled:true}).then(function(cs){ cs.forEach(function(c){ c.postMessage({type:'updated'}); }); });
+  var once = function(){ return self.clients.matchAll({type:'window', includeUncontrolled:true}).then(function(cs){ cs.forEach(function(c){ c.postMessage({type:'updated'}); }); }); };
+  return once().then(function(){ return new Promise(function(r){ setTimeout(r, 1500); }); }).then(once);
 }
 self.addEventListener('fetch', function(e){
   var req = e.request, url = new URL(req.url);

@@ -165,7 +165,7 @@ end $$;
 revoke all on function public.restore_snapshot(date) from public, anon, authenticated;
 
 -- ---------- 8. Vue pratique pour la régie / Excel -------------------
--- Table Editor > v_ventes_lignes > Export CSV.
+-- Table Editor > v_ventes_lignes > Export CSV. (encaisse_eur = argent encaissé ; valeur_offerte_eur = utilisations pour don / restauration / dégustation)
 create or replace view public.v_ventes_lignes with (security_invoker = true) as
 select s.id as vente,
        to_timestamp((s.data ->> 'ts')::bigint / 1000.0) as date_heure,
@@ -174,10 +174,17 @@ select s.id as vente,
        (l ->> 'qty')::int as quantite,
        (l ->> 'unit')::numeric / 100 as prix_unitaire_eur,
        ((l ->> 'qty')::int * (l ->> 'unit')::numeric) / 100 as total_ligne_eur,
-       s.data ->> 'pay' as paiement,
+       case s.data ->> 'pay' when 'cash' then 'Espèces' when 'card' then 'Carte' when 'other' then 'Autre'
+                              when 'don' then 'Utilisation pour don' when 'resto' then 'Utilisation pour restauration'
+                              when 'degust' then 'Utilisation pour dégustation'
+                              else s.data ->> 'pay' end as paiement,
        case when coalesce((v.data ->> 'active')::boolean, v.id is not null) then 'Annulée' else 'Valide' end as statut,
        coalesce((s.data ->> 'epoch')::int, 1) as epoque,
-       (coalesce((s.data ->> 'epoch')::int, 1) = coalesce((select (c.data ->> 'epoch')::int from public.config c where c.id = 'main'), 1)) as epoque_courante
+       (coalesce((s.data ->> 'epoch')::int, 1) = coalesce((select (c.data ->> 'epoch')::int from public.config c where c.id = 'main'), 1)) as epoque_courante,
+       s.data ->> 'seller' as vendeur,
+       s.data ->> 'acct' as compte,
+       case when s.data ->> 'pay' in ('don', 'resto', 'degust') then 0::numeric else ((l ->> 'qty')::int * (l ->> 'unit')::numeric) / 100 end as encaisse_eur,
+       case when s.data ->> 'pay' in ('don', 'resto', 'degust') then ((l ->> 'qty')::int * (l ->> 'unit')::numeric) / 100 else 0::numeric end as valeur_offerte_eur
 from public.sales s
 cross join lateral jsonb_array_elements(s.data -> 'lines') l
 left join public.voids v on v.id = s.id;
