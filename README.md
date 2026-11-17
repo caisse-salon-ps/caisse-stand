@@ -70,6 +70,8 @@ Onglet **Gestion** → *Importer (CSV)* : collez vos lignes depuis Excel, au for
 
 **Erreur de saisie à la caisse** : une tuile touchée par erreur se corrige tout de suite. Sur la tuile (bordure verte), le bouton rond **−** retire une unité ; dans le panier, **−** / **+** ajustent la quantité et **Retirer** supprime la ligne entière. Rien n'est enregistré tant qu'on n'a pas appuyé sur *Encaisser*.
 
+**Encaissement sur téléphone et tablette** : la fenêtre « Encaisser » a son propre pavé numérique (le clavier du téléphone ne s'ouvre plus, donc plus rien n'est caché). Les boutons verts à droite du pavé donnent l'appoint et les billets proches du total ; la case « Ouverture d'une bouteille » est juste sous le montant ; le bouton *Valider* reste toujours visible en bas. Sur tablette (écran large), le panier est toujours affiché à droite, avec son total et *Encaisser* fixes même quand la liste est longue. Dans les formulaires de Gestion, le bouton *Enregistrer* reste visible quand le clavier est ouvert.
+
 **Vendeurs permanents** : onglet **Gestion** → *Vendeurs permanents* → *Modifier la liste* (un nom par ligne). Quand quelqu'un prend une tablette, il touche son nom dans la fenêtre « Qui prend la caisse ? ». Les vendeurs de passage touchent *Je suis vendeur occasionnel* (prénom facultatif). Le nom est enregistré sur chaque vente, annulation et ajustement de stock, et apparaît dans l'historique, dans l'export CSV et dans le bilan par vendeur. Il s'affiche en haut de l'écran : touchez-le pour changer de vendeur à la relève. La tablette redemande le nom après 2 heures sans vente et avant d'encaisser si aucun nom n'est choisi. Le nom est déclaratif (pas de code personnel).
 
 ## Étape 7 — Répétition générale (à ne pas sauter, 20 minutes)

@@ -2,7 +2,7 @@
    Stratégie « stale-while-revalidate » : on sert tout de suite la copie en cache,
    puis on la met à jour en arrière-plan. Les appels à Supabase (autre domaine) ne
    passent jamais par ici. Changez VERSION pour forcer un nettoyage des anciens caches. */
-var VERSION = 'caisse-1.2.1';
+var VERSION = 'caisse-1.2.2';
 var SHELL = ['./', 'index.html', 'config.js', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', function(e){

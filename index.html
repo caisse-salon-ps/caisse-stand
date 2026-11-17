@@ -30,7 +30,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .dev{font-size:12px;color:var(--muted);padding:2px 0;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
 .dev.sel{color:var(--ink);font-weight:600}
 .dev.none{color:var(--warn);font-weight:700}
-.openrow{display:flex;gap:12px;align-items:center;margin:14px 0 6px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;font-weight:600}
+.openrow{display:flex;gap:12px;align-items:center;margin:10px 0 4px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;font-weight:600}
 .openrow input{width:24px;height:24px;flex:none}
 .freeseg{margin-top:8px}
 .freeseg button{font-size:13px;line-height:1.2}
@@ -67,7 +67,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .badge{position:absolute;top:-8px;right:-4px;min-width:28px;height:28px;border-radius:99px;background:var(--acc);color:#fff;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;padding:0 7px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
 .cartaside{display:none}
 #cartbar{display:block}
-.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;--px:14px;--pb:14px}
 .panel h2{display:flex;justify-content:space-between;align-items:baseline}
 .link{color:var(--acc);font-weight:600;font-size:14px;padding:6px 2px}
 .link.bad{color:var(--bad)}
@@ -124,18 +124,28 @@ th{font-size:12px;color:var(--muted);font-weight:600}
 textarea.in{font-size:14px;font-family:ui-monospace,Menlo,Consolas,monospace;min-height:130px}
 .hint{font-size:13px;color:var(--muted);margin:6px 0}
 #modal[hidden]{display:none}
-#modal{position:fixed;inset:0;z-index:50}
+#modal{position:fixed;left:0;right:0;top:var(--vvt,0px);bottom:var(--vvb,0px);z-index:50}
 .ov{position:absolute;inset:0;background:rgba(20,28,24,.52);display:flex;align-items:flex-end;justify-content:center}
-.sheet{background:var(--card);width:100%;max-width:540px;max-height:92dvh;overflow:auto;border-radius:22px 22px 0 0;padding:18px 16px calc(18px + var(--sab));animation:up .18s ease-out}
+.sheet{background:var(--card);width:100%;max-width:540px;max-height:92vh;max-height:min(92dvh,calc(100dvh - var(--vvt,0px) - var(--vvb,0px) - 16px));overflow:auto;overscroll-behavior:contain;--px:16px;--pb:calc(18px + var(--sab));border-radius:22px 22px 0 0;padding:18px 16px calc(18px + var(--sab));animation:up .18s ease-out}
 @keyframes up{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
 .shead{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 .shead h2{margin:0}
 .x{font-size:26px;width:40px;height:40px;border-radius:99px;color:var(--muted)}
-.big{font-size:44px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.1;margin:6px 0 14px}
+.big{font-size:40px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.1;margin:2px 0 6px}
 .quick{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
 .quick .btn{flex:1;min-width:76px;padding:12px 8px}
 .change{font-size:22px;font-weight:700;padding:12px 14px;border-radius:12px;background:var(--acc-s);color:var(--acc-d);margin:10px 0 16px}
 .change.bad{background:var(--bad-s);color:var(--bad)}
+#changebox.change{font-size:17px;padding:7px 12px;margin:6px 0}
+.sfoot{position:sticky;bottom:calc(-1 * var(--pb,18px));z-index:2;margin:10px calc(-1 * var(--px,16px)) calc(-1 * var(--pb,18px));padding:8px var(--px,16px) var(--pb,18px);background:var(--card);box-shadow:0 -6px 10px -8px rgba(0,0,0,.28)}
+.sfoot .tot{margin-top:0;padding-top:10px}
+.recv{font-size:24px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;padding:5px 14px}
+#cashbox .field{margin-top:8px}
+.sheet .seg button{padding:8px 6px}
+.sheet .freeseg button{padding:5px 4px;font-size:12px}
+.pad{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:6px 0}
+.pad .btn{padding:0;height:46px;height:clamp(38px,5.6dvh,46px);font-size:21px;display:flex;align-items:center;justify-content:center}
+.pad .qk{font-size:15px;background:var(--acc-s);border-color:var(--acc-s);color:var(--acc-d)}
 .ok{text-align:center;padding:10px 0 4px}
 .ok .tick{width:64px;height:64px;border-radius:99px;background:var(--acc);color:#fff;font-size:36px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
 .cfgrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
@@ -146,8 +156,11 @@ textarea.in{font-size:14px;font-family:ui-monospace,Menlo,Consolas,monospace;min
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media(min-width:700px){.ov{align-items:center}.sheet{border-radius:22px}.kpis{grid-template-columns:repeat(4,1fr)}}
 @media(min-width:900px){
- .vente{display:grid;grid-template-columns:1fr 370px;gap:18px;align-items:start}
+ .vente{display:grid;grid-template-columns:minmax(0,1fr) 370px;gap:18px;align-items:start}
+ .vente > section{min-width:0}
+ .chips{flex-wrap:wrap;overflow:visible}
  .cartaside{display:block;position:sticky;top:78px}
+ .cartaside .panel{max-height:calc(100dvh - 104px - var(--tabh) - var(--sab));overflow:auto}
  #cartbar{display:none}
  #main{padding-bottom:calc(var(--tabh) + var(--sab) + 28px)}
 }
@@ -249,7 +262,7 @@ var flushing = false, pulling = false, soloNext = false, pullSent = [], cacheT =
 
 /* ---------- Configuration et connexion Supabase ---------- */
 var CFG = window.CAISSE_CONFIG || {};
-var VERSION = '1.2.1';
+var VERSION = '1.2.2';
 var BASE = String(CFG.SUPABASE_URL || '').replace(/\/+$/, '');
 var KEY = String(CFG.SUPABASE_KEY || '');
 var CONFIGURED = /^https?:\/\/\S+$/.test(BASE) && BASE.indexOf('VOTRE') < 0 && KEY.length > 20 && KEY.indexOf('VOTRE') < 0;
@@ -512,7 +525,7 @@ function openBoxHtml(plan){
   if(!plan.length) return '';
   return '<div id="openbox">' + plan.map(function(o){ var n = Math.max(1, o.k);
     return '<label class="openrow"><input type="checkbox" data-a="opentoggle" data-s="' + esc(o.sid) + '"' + (o.on ? ' checked' : '') + '><span>' + (n > 1 ? 'Ouverture de ' + n + ' bouteilles' : 'Ouverture d’une bouteille') + ' · ' + esc(o.name) + '</span></label>'; }).join('') +
-    '<p class="hint" style="margin:0 0 10px">Cochez si une nouvelle bouteille a été ouverte pour cette vente.</p></div>';
+    '</div>';
 }
 function pstate(D, p){ return (p.track === false || p.id in D.src) ? '' : state(p, D.stock[p.id]); }
 var D0 = function(){ return derive(M()); };
@@ -660,7 +673,7 @@ function cartPanel(D, sheet){
       '<div class="qty"><button data-a="dec" data-id="' + esc(id) + '" aria-label="Moins">−</button><span>' + q + '</span><button data-a="inc" data-id="' + esc(id) + '" aria-label="Plus">+</button></div>' +
       '<div class="lt">' + money(p.price * q) + '</div></div>';
   }).join('');
-  return head + lines + '<div class="tot"><span>Total (' + cartCount(D) + ' article' + (cartCount(D) > 1 ? 's' : '') + ')</span><b>' + money(total) + '</b></div><button class="btn pri lg" data-a="pay">Encaisser</button>';
+  return head + lines + '<div class="sfoot"><div class="tot"><span>Total (' + cartCount(D) + ' article' + (cartCount(D) > 1 ? 's' : '') + ')</span><b>' + money(total) + '</b></div><button class="btn pri lg" data-a="pay">Encaisser</button></div>';
 }
 function cartbarHtml(D){
   if(S.tab !== 'vente' || S.modal) return '';
@@ -778,7 +791,7 @@ function openModal(html, type){
   var m = $('#modal'); m.hidden = false;
   m.innerHTML = '<div class="ov"><div class="sheet" id="sheet" role="dialog" aria-modal="true">' + html + '</div></div>';
   draw();
-  setTimeout(function(){ if(type === 'seller') return; var f = m.querySelector('[autofocus],input.in,textarea'); if(f && f.focus) f.focus(); }, 60);
+  setTimeout(function(){ if(type === 'seller' || type === 'pay') return; var f = m.querySelector('[autofocus],input.in,textarea'); if(f && f.focus) f.focus(); }, 60);
 }
 function closeModal(){ S.modal = null; PAYST = null; var m = $('#modal'); m.hidden = true; m.innerHTML = ''; draw(); }
 function head(t){ return '<div class="shead"><h2>' + t + '</h2><button class="x" data-a="close" aria-label="Fermer">×</button></div>'; }
@@ -823,7 +836,7 @@ function openSellerList(){
   var D = D0();
   openModal(head('Vendeurs permanents') + '<p class="hint" style="margin-top:0">Un nom par ligne. L’ordre est conservé. Retirer un nom ne modifie pas les ventes déjà faites.</p>' +
     '<textarea id="sellerstxt" class="in" data-keep="1" style="min-height:180px" placeholder="Marie&#10;Jean&#10;…">' + esc(D.sellers.join('\n')) + '</textarea>' +
-    '<div id="sellerr" class="bad" style="min-height:22px"></div><button class="btn pri lg" data-a="savesellers">Enregistrer</button>', 'sellerlist');
+    '<div class="sfoot"><div id="sellerr" class="bad" style="min-height:22px"></div><button class="btn pri lg" data-a="savesellers">Enregistrer</button></div>', 'sellerlist');
 }
 function saveSellers(){
   var seen = {}, names = [];
@@ -842,15 +855,25 @@ function openPay(){
   PAYST = {mode:'cash', total:t, busy:false, plan:openPlan(D, S.cart)};
   var bills = [5, 10, 20, 50, 100, 200, 500].filter(function(b){ return b * 100 > t; }).slice(0, 3);
   openModal(head('Encaisser') + '<div class="big" id="paytotal">' + money(t) + '</div>' +
+    openBoxHtml(PAYST.plan) +
     '<div class="seg"><button data-a="paymode" data-pm="cash">Espèces</button><button data-a="paymode" data-pm="card">Carte</button><button data-a="paymode" data-pm="other">Autre</button></div>' +
     '<div class="seg freeseg"><button data-a="paymode" data-pm="don">Utilisation pour don</button><button data-a="paymode" data-pm="resto">Utilisation pour restauration</button><button data-a="paymode" data-pm="degust">Utilisation pour dégustation</button></div>' +
     '<div id="freebox" class="hint" hidden></div>' +
-    '<div id="cashbox"><label class="field" for="recv">Montant reçu (vide = appoint)</label><input id="recv" class="in" inputmode="decimal" autocomplete="off" placeholder="' + numFr(t) + '">' +
-    '<div class="quick"><button class="btn" data-a="cash" data-v="' + t + '">Appoint</button>' + bills.map(function(b){ return '<button class="btn" data-a="cash" data-v="' + (b * 100) + '">' + b + ' €</button>'; }).join('') + '</div>' +
-    '<div id="changebox" class="change"></div></div>' +
-    openBoxHtml(PAYST.plan) +
-    '<button id="okpay" class="btn pri lg" data-a="confirmpay">Valider la vente</button>', 'pay');
+    '<div id="cashbox"><label class="field" for="recv">Montant reçu (vide = appoint)</label><input id="recv" class="in recv" inputmode="none" autocomplete="off" placeholder="' + numFr(t) + '">' +
+    '<div id="changebox" class="change"></div>' + padHtml(t, bills) + '</div>' +
+    '<div class="sfoot"><button id="okpay" class="btn pri lg" data-a="confirmpay">Valider la vente</button></div>', 'pay');
   updatePay();
+}
+function padHtml(t, bills){
+  var q = [{l:'Appoint', v:t}].concat(bills.map(function(b){ return {l:b + ' €', v:b * 100}; }));
+  var rows = [['7','8','9'], ['4','5','6'], ['1','2','3'], [',','0','bs']], h = '';
+  var bsIcon = '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 5H9l-6 7 6 7h12z"/><path d="M13 9l4 6M17 9l-4 6"/></svg>';
+  rows.forEach(function(row, i){
+    row.forEach(function(k){ h += '<button class="btn" data-a="key" data-key="' + k + '"' + (k === 'bs' ? ' aria-label="Effacer"' : '') + '>' + (k === 'bs' ? bsIcon : k) + '</button>'; });
+    var b = q[i];
+    h += b ? '<button class="btn qk" data-a="cash" data-v="' + b.v + '">' + b.l + '</button>' : '<span></span>';
+  });
+  return '<div class="pad">' + h + '</div>';
 }
 function recvCents(){ var v = $('#recv').value.trim(); return v === '' ? PAYST.total : parseEuros(v); }
 function updatePay(){
@@ -901,7 +924,7 @@ function openAdjust(pid){
     '<div class="seg" style="flex-wrap:wrap">' + Object.keys(KINDS).map(function(k){ return '<button data-a="adjkind" data-kind="' + k + '">' + KINDS[k] + '</button>'; }).join('') + '</div>' +
     '<label class="field" id="adjlbl" for="adjq">Quantité</label><input id="adjq" class="in" inputmode="numeric" autocomplete="off" placeholder="0">' +
     '<label class="field" for="adjn">Note (facultatif)</label><input id="adjn" class="in" autocomplete="off" placeholder="ex. carton reçu, produit abîmé…">' +
-    '<div id="adjprev" class="change" style="margin-top:14px"></div><button id="adjok" class="btn pri lg" data-a="adjsave">Enregistrer</button>', 'adjust');
+    '<div class="sfoot"><div id="adjprev" class="change" style="margin:0 0 10px"></div><button id="adjok" class="btn pri lg" data-a="adjsave">Enregistrer</button></div>', 'adjust');
   updateAdjust();
 }
 function adjDelta(){
@@ -937,7 +960,7 @@ function openProduct(id){
     '<div><label class="field" for="f-cap">Contenance (verres)</label><input id="f-cap" class="in" inputmode="decimal" value="' + (Number(p.cap) || 1) + '"></div></div>' +
     '<p class="hint">Pour un verre : choisissez la bouteille (ou le fût) et laissez « prélevé » à 1. Sur la bouteille : indiquez combien de verres elle contient (ex. 6). L’appli compte alors les bouteilles ouvertes.</p>' +
     '<label style="display:flex;gap:10px;align-items:center;margin:12px 0"><input id="f-act" type="checkbox" ' + (p.active === false ? '' : 'checked') + ' style="width:22px;height:22px"> Visible à la caisse</label>' +
-    '<div id="f-err" class="bad" style="min-height:22px"></div><button class="btn pri lg" data-a="saveprod">Enregistrer</button>', 'product');
+    '<div class="sfoot"><div id="f-err" class="bad" style="min-height:22px"></div><button class="btn pri lg" data-a="saveprod">Enregistrer</button></div>', 'product');
 }
 function saveProduct(){
   var name = $('#f-name').value.trim(), price = parseEuros($('#f-price').value), init = parseIntStrict($('#f-init').value), thr = parseIntStrict($('#f-thr').value), err = '';
@@ -987,7 +1010,7 @@ function openImport(){
     '<input id="impfile" type="file" accept=".csv,.txt,.tsv" style="margin:6px 0">' +
     '<textarea id="imp" class="in" placeholder="T-shirt adulte;Habillement;22,00;60;10"></textarea>' +
     '<div class="seg" style="margin-top:10px"><button data-a="impmode" data-m="add">Ajouter / mettre à jour</button><button data-a="impmode" data-m="replace">Remplacer le catalogue</button></div>' +
-    '<div id="impsum" class="hint" style="min-height:44px"></div><button id="impok" class="btn pri lg" data-a="impgo">Importer</button>', 'import');
+    '<div id="impsum" class="hint" style="min-height:44px"></div><div class="sfoot"><button id="impok" class="btn pri lg" data-a="impgo">Importer</button></div>', 'import');
   updateImport();
 }
 function updateImport(){
@@ -1088,7 +1111,21 @@ var ACT = {
   savesellers:function(){ saveSellers(); },
   opentoggle:function(el){ if(!PAYST) return; var o = PAYST.plan.filter(function(x){ return x.sid === el.getAttribute('data-s'); })[0]; if(o) o.on = !!el.checked; },
   paymode:function(el){ if(!PAYST) return; PAYST.mode = el.getAttribute('data-pm'); updatePay(); },
-  cash:function(el){ $('#recv').value = numFr(parseInt(el.getAttribute('data-v'), 10)); updatePay(); },
+  cash:function(el){ $('#recv').value = numFr(parseInt(el.getAttribute('data-v'), 10)); if(PAYST) PAYST.fresh = true; updatePay(); },
+  key:function(el){
+    if(!PAYST) return;
+    var k = el.getAttribute('data-key'), inp = $('#recv'), v = inp.value;
+    if(PAYST.fresh){ PAYST.fresh = false; v = ''; if(k === 'bs'){ inp.value = ''; updatePay(); return; } }   /* apres Appoint / billet : la touche suivante repart de zero */
+    if(k === 'bs') v = v.slice(0, -1);
+    else if(k === ','){ if(/[,.]/.test(v)) return; v = (v === '' ? '0' : v) + ','; }
+    else {
+      var m = v.match(/[,.](\d*)$/);
+      if(m && m[1].length >= 2) return;                 /* 2 decimales maximum */
+      if(v.replace(/\D/g, '').length >= 7) return;       /* montant raisonnable */
+      v = (v === '0' ? '' : v) + k;
+    }
+    inp.value = v; updatePay();
+  },
   confirmpay:function(){ commitSale(); },
   close:function(){ closeModal(); },
   sfilter:function(el){ S.stockFilter = el.getAttribute('data-f'); draw(); },
@@ -1141,7 +1178,7 @@ var ACT = {
     });
   },
   device:function(){
-    openModal(head('Nom de cet appareil') + '<p class="hint">Il apparaît sur chaque vente (ex. Caisse 1, Tablette stand, Téléphone Marie).</p><input id="devname" class="in" value="' + esc(S.device.name) + '" autocomplete="off"><div style="height:12px"></div><button class="btn pri lg" data-a="savedev">Enregistrer</button>', 'device');
+    openModal(head('Nom de cet appareil') + '<p class="hint">Il apparaît sur chaque vente (ex. Caisse 1, Tablette stand, Téléphone Marie).</p><input id="devname" class="in" value="' + esc(S.device.name) + '" autocomplete="off"><div class="sfoot"><button class="btn pri lg" data-a="savedev">Enregistrer</button></div>', 'device');
   },
   savedev:function(){ var v = $('#devname').value.trim(); if(!v) return; S.device.name = v; ls.set('pos:device', JSON.stringify(S.device)); closeModal(); ensureSeller(); },
   sync:function(){
@@ -1214,6 +1251,19 @@ document.addEventListener('keydown', function(e){
     else if(e.target.id === 'devname'){ e.preventDefault(); ACT.savedev(); }
     else if(e.target.id === 'occname'){ e.preventDefault(); ACT.pickocc(); }
   }
+});
+function fitKeyboard(){
+  var vv = window.visualViewport, st = document.documentElement.style;
+  if(!vv) return;
+  var kb = vv.scale <= 1.02 ? Math.round(window.innerHeight - vv.height - vv.offsetTop) : 0;   /* hauteur masquee par le clavier */
+  if(kb > 80){ st.setProperty('--vvt', Math.round(vv.offsetTop) + 'px'); st.setProperty('--vvb', kb + 'px'); }
+  else { st.removeProperty('--vvt'); st.removeProperty('--vvb'); }
+}
+if(window.visualViewport){ window.visualViewport.addEventListener('resize', fitKeyboard); window.visualViewport.addEventListener('scroll', fitKeyboard); fitKeyboard(); }
+document.addEventListener('focusin', function(e){
+  var t = e.target;
+  if(!t || !t.closest || !t.closest('#sheet') || !/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;
+  setTimeout(function(){ try{ t.scrollIntoView({block:'center', behavior:'smooth'}); }catch(_){} }, 320);
 });
 window.addEventListener('online', function(){ S.online = true; draw(); flush(); pull(); });
 window.addEventListener('offline', function(){ S.online = false; draw(); });
