@@ -1,0 +1,65 @@
+name: Maintenance quotidienne (anti-pause + sauvegarde)
+
+# Chaque jour : appelle la fonction « maintenance » de Supabase (lecture + écriture dans la base,
+# ce qui évite la mise en pause du projet gratuit, et crée la sauvegarde du jour).
+# L'adresse et la clé « publishable » (publiques par conception, déjà présentes dans config.js)
+# sont intégrées ici ; des secrets GitHub du même nom, s'ils existent, les remplacent.
+# Garde aussi ce dépôt « actif » pour que GitHub ne désactive pas ce workflow au bout de 60 jours.
+
+on:
+  schedule:
+    - cron: "17 16 * * *"   # tous les jours à 16 h 17 UTC (= 3 h 17 du matin en Nouvelle-Calédonie)
+  workflow_dispatch:         # permet aussi de le lancer à la main (onglet Actions > Run workflow)
+
+permissions:
+  contents: write            # pour le petit fichier d'activité
+  actions: write             # pour réactiver le workflow s'il avait été désactivé
+
+jobs:
+  maintenance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Maintenance Supabase (ping + sauvegarde du jour)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL || 'https://phymtocnbixtvhybnilt.supabase.co' }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY || 'sb_publishable_uUjtQ2Yk3q2vrBFpug6Y4g_cH13fu3z' }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SUPABASE_URL:-}" ] || [ -z "${SUPABASE_KEY:-}" ]; then
+            echo "::error::Secrets SUPABASE_URL et/ou SUPABASE_KEY manquants (Settings > Secrets and variables > Actions)."
+            exit 1
+          fi
+          hdr=(-H "apikey: $SUPABASE_KEY" -H "Content-Type: application/json")
+          # Ancienne clé « anon » (jeton eyJ...) : elle doit aussi être envoyée en Authorization.
+          # Nouvelle clé « publishable » (sb_publishable_...) : apikey seul suffit.
+          case "$SUPABASE_KEY" in eyJ*) hdr+=(-H "Authorization: Bearer $SUPABASE_KEY");; esac
+          # -f : un code HTTP d'erreur fait échouer l'étape (contrairement à « curl -s » seul).
+          resp=$(curl -fsS --retry 5 --retry-delay 15 --retry-all-errors --max-time 30 \
+                   -X POST "${hdr[@]}" -d '{}' "$SUPABASE_URL/rest/v1/rpc/maintenance")
+          echo "Réponse : $resp"
+          echo "$resp" | grep -Eq '"ok" *: *true' || { echo "::error::Réponse inattendue de la fonction maintenance."; exit 1; }
+
+      - name: Garder le dépôt actif (anti-désactivation à 60 jours)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # 1) Réactive le workflow par l'API (sans effet s'il est déjà actif) : remet le compteur à zéro.
+          gh workflow enable "${{ github.workflow }}" --repo "${{ github.repository }}" || echo "(réactivation ignorée)"
+          # 2) Au plus un petit commit tous les 40 jours sur la branche principale.
+          last=$(cat .keepalive/last-run.txt 2>/dev/null || echo 1970-01-01)
+          age=$(( ( $(date +%s) - $(date -d "$last" +%s 2>/dev/null || echo 0) ) / 86400 ))
+          if [ "$age" -ge 40 ]; then
+            mkdir -p .keepalive
+            date -u +%F > .keepalive/last-run.txt
+            git config user.name "keep-alive-bot"
+            git config user.email "keep-alive-bot@users.noreply.github.com"
+            git add .keepalive/last-run.txt
+            git commit -m "keep-alive $(date -u +%F)"
+            git push
+          else
+            echo "Dernier commit d'activité il y a $age jour(s) : rien à faire."
+          fi
